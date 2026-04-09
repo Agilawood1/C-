@@ -8,6 +8,8 @@ static x& GetInstance()
   static x instance; // x为类名
   return instance;
 }
+x(const &x) = delete;
+x& operator = (const &x) = delete;
 ```
 - 为什么要用static
   
@@ -27,3 +29,14 @@ static x& GetInstance()
     ref = 20;    // 修改 ref，a 也会变成 20
     // int& ref是错误写法
     ```
+- 禁用拷贝构造函数
+  
+  `x(const &x) = delete;`
+  
+  防止写 `x another_instance = x::GetInstance();`，这会拷贝出单例的一个副本。以串口业务为例，如果析构函数里有关闭串口的操作，其中一个对象销毁时把串口关了，另一个对象就会直接崩溃。
+  
+- 禁用赋值操作符
+
+  `x& operator = (const x&) = delete;`
+
+  防止先创建一个对象，然后赋值给他，违背单例设计原则
