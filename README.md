@@ -3,13 +3,16 @@
 ## 单例写法
 
 ```
-static x& GetInstance()
-{
-  static x instance; // x为类名
-  return instance;
-}
-x(const &x) = delete;
-x& operator = (const &x) = delete;
+public：
+  static x& GetInstance()
+  {
+    static x instance; // x为类名
+    return instance;
+  }
+  x(const &x) = delete;
+  x& operator = (const &x) = delete;
+private:
+  x() = default;
 ```
 - 为什么要用static
   
@@ -40,3 +43,10 @@ x& operator = (const &x) = delete;
   `x& operator = (const x&) = delete;`
 
   防止先创建一个对象，然后赋值给他，违背单例设计原则
+
+- 显式写出构造函数，并声明为`private`
+
+  ```
+  private:
+    x() = default;
+  ```
